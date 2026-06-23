@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>{{ product.name }}</h1>
+
+<div class="product-detail">
+    <div class="product-image">
+        {% if product.image_url %}
+            <img src="{{ product.image_url }}" alt="{{ product.name }}">
+        {% else %}
+            <img src="/static/images/placeholder.svg" alt="No image">
+        {% endif %}
+    </div>
+
+    <div class="product-info">
+        <p class="price">${{ "%.2f" | format(product.price) }}</p>
+        <p class="description">{{ product.description }}</p>
+        <p class="inventory">In Stock: {{ product.inventory }}</p>
+        
+        <a href="{{ url_for('add_to_cart', product_id=product.id) }}" class="button">Add to Cart</a>
+        
+        {% if reviews %}
+            <h3>Average Rating: {{ "%.1f" | format(avg_rating) }}/5</h3>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Related Products Section -->
+{% if related_products %}
+<h3>You Might Also Like</h3>
+<div class="related-products">
+    {% for related in related_products %}
+        <div class="product-card">
+            <img src="{{ related.image_url or '/static/images/placeholder.svg' }}" alt="{{ related.name }}">
+            <h4>{{ related.name }}</h4>
+            <p class="price">${{ "%.2f" | format(related.price) }}</p>
+            <a href="{{ url_for('product_detail', product_id=related.id) }}" class="button small">View</a>
+            <a href="{{ url_for('add_to_cart', product_id=related.id) }}" class="button small">Add to Cart</a>
+        </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<!-- Reviews Section -->
+<h3>Customer Reviews</h3>
+{% if reviews %}
+    <div class="reviews-list">
+        {% for review in reviews %}
+            <div class="review">
+                <strong>{{ review.user.email }}</strong> - {{ review.rating }}/5
+                <p>{{ review.comment }}</p>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>No reviews yet.</p>
+{% endif %}
+
+<!-- Add Review Form -->
+{% if current_user.is_authenticated %}
+    <form method="post" action="{{ url_for('add_review', product_id=product.id) }}" class="review-form">
+        <h4>Leave a Review</h4>
+        <label>Rating</label>
+        <select name="rating">
+            <option value="5">5 - Excellent</option>
+            <option value="4">4 - Good</option>
+            <option value="3">3 - Average</option>
+            <option value="2">2 - Poor</option>
+            <option value="1">1 - Terrible</option>
+        </select>
+        
+        <label>Comment</label>
+        <textarea name="comment" required></textarea>
+        
+        <button class="button" type="submit">Submit Review</button>
+    </form>
+{% else %}
+    <p><a href="{{ url_for('login') }}">Login</a> to leave a review.</p>
+{% endif %}
+{% endblock %}

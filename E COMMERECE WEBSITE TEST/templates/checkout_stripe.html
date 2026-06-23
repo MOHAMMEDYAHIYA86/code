@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Checkout with Stripe</h2>
+<div class="checkout-grid">
+    <section class="checkout-form">
+        <form method="post">
+            <button class="button" type="submit">Proceed to Payment</button>
+        </form>
+    </section>
+
+    <section class="checkout-summary">
+        <h3>Order Summary</h3>
+        <ul class="summary-list">
+            {% for item in cart_items %}
+                <li>{{ item.quantity }} × {{ item.product.name }} — ${{ "%.2f" | format(item.subtotal) }}</li>
+            {% endfor %}
+        </ul>
+        <p class="summary-total">Total: ${{ "%.2f" | format(total) }}</p>
+    </section>
+</div>
+{% endblock %}

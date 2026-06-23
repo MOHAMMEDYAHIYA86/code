@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Pending Reviews</h2>
+<div class="reviews-list">
+    {% for review in reviews %}
+        <div class="review-card">
+            <p><strong>{{ review.user.email }}</strong> - Rating: <strong>{{ review.rating }}/5</strong></p>
+            <p>{{ review.comment }}</p>
+            <form action="{{ url_for('admin_approve_review', review_id=review.id) }}" method="post" style="display:inline;">
+                <button class="button" type="submit">Approve</button>
+            </form>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

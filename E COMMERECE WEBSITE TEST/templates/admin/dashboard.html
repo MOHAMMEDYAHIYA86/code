@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Admin Dashboard</h2>
+<div class="admin-stats">
+    <div class="stat-card">
+        <h3>{{ total_orders }}</h3>
+        <p>Total Orders</p>
+    </div>
+    <div class="stat-card">
+        <h3>${{ "%.2f" | format(total_revenue) }}</h3>
+        <p>Total Revenue</p>
+    </div>
+    <div class="stat-card">
+        <h3>{{ total_products }}</h3>
+        <p>Total Products</p>
+    </div>
+    <div class="stat-card">
+        <h3>{{ total_users }}</h3>
+        <p>Total Users</p>
+    </div>
+</div>
+
+<!-- Low Stock Alert -->
+{% if low_stock_products %}
+<div class="alert alert-warning">
+    <h3>⚠️ Low Stock Alert</h3>
+    <ul>
+        {% for product in low_stock_products %}
+            <li>{{ product.name }}: {{ product.inventory }} left</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+<div class="admin-links">
+    <a href="{{ url_for('admin_products') }}" class="button">Manage Products</a>
+    <a href="{{ url_for('admin_orders') }}" class="button">View Orders</a>
+    <a href="{{ url_for('admin_reviews') }}" class="button">Approve Reviews</a>
+    <a href="{{ url_for('admin_coupons') }}" class="button">Manage Coupons</a>
+    <a href="{{ url_for('admin_shipping') }}" class="button">Shipping Methods</a>
+    <a href="{{ url_for('admin_analytics') }}" class="button">Analytics</a>
+</div>
+{% endblock %}

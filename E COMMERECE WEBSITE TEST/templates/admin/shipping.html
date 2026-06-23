@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Shipping Methods</h2>
+
+<form method="post" class="form-section">
+    <h3>Add Shipping Method</h3>
+    <label>Name</label>
+    <input name="name" placeholder="e.g., Express Shipping" required>
+    
+    <label>Cost ($)</label>
+    <input name="cost" type="number" step="0.01" placeholder="e.g., 14.99" required>
+    
+    <label>Delivery Days</label>
+    <input name="delivery_days" type="number" placeholder="e.g., 2" required>
+    
+    <button class="button" type="submit">Add Shipping Method</button>
+</form>
+
+<h3>Active Shipping Methods</h3>
+<table class="shipping-table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Cost</th>
+            <th>Delivery</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for method in methods %}
+            <tr>
+                <td>{{ method.name }}</td>
+                <td>${{ "%.2f" | format(method.cost) }}</td>
+                <td>{{ method.delivery_days }} days</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

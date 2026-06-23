@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Manage Coupons</h2>
+<form method="post" class="form-section">
+    <h3>Create Coupon</h3>
+    <label>Code</label>
+    <input name="code" placeholder="e.g., SAVE10" required>
+    
+    <label>Discount % (optional)</label>
+    <input name="discount_percent" type="number">
+    
+    <label>Discount $ (optional)</label>
+    <input name="discount_amount" type="number" step="0.01">
+    
+    <button class="button" type="submit">Create</button>
+</form>
+
+<h3>Active Coupons</h3>
+<table class="coupons-table">
+    <thead>
+        <tr>
+            <th>Code</th>
+            <th>Discount</th>
+            <th>Active</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for coupon in coupons %}
+            <tr>
+                <td>{{ coupon.code }}</td>
+                <td>
+                    {% if coupon.discount_percent %}{{ coupon.discount_percent }}%{% endif %}
+                    {% if coupon.discount_amount %}\${{ coupon.discount_amount }}{% endif %}
+                </td>
+                <td>{% if coupon.active %}Yes{% else %}No{% endif %}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

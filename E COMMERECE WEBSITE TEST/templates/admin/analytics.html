@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Analytics Dashboard</h2>
+
+<div class="analytics-stats">
+    <div class="stat-card">
+        <h3>{{ total_orders }}</h3>
+        <p>Total Orders</p>
+    </div>
+    <div class="stat-card">
+        <h3>${{ "%.2f" | format(total_revenue) }}</h3>
+        <p>Total Revenue</p>
+    </div>
+    <div class="stat-card">
+        <h3>{{ "%d" | format((analytics[0].total_views if analytics else 0)) }}</h3>
+        <p>Today Views</p>
+    </div>
+    <div class="stat-card">
+        <h3>{{ "%d" | format((analytics[0].total_purchases if analytics else 0)) }}</h3>
+        <p>Today Orders</p>
+    </div>
+</div>
+
+<h3>Daily Analytics</h3>
+<table class="analytics-table">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Views</th>
+            <th>Orders</th>
+            <th>Revenue</th>
+            <th>Conversion</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for record in analytics %}
+            <tr>
+                <td>{{ record.metric_date }}</td>
+                <td>{{ record.total_views }}</td>
+                <td>{{ record.total_purchases }}</td>
+                <td>${{ "%.2f" | format(record.total_revenue) }}</td>
+                <td>{{ "%.2f" | format(record.conversion_rate) }}%</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

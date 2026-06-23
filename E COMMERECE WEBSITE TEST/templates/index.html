@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Featured Products</h2>
+<div class="product-grid">
+    {% for product in products %}
+        <div class="product-card">
+            <img src="{{ product.image }}" alt="{{ product.name }}" class="product-image">
+            <h3>{{ product.name }}</h3>
+            <p>{{ product.description }}</p>
+            <p class="price">${{ "%.2f" | format(product.price) }}</p>
+            <div class="product-actions">
+                <a class="button" href="{{ url_for('product_detail', product_id=product.id) }}">View</a>
+                <a class="button" href="{{ url_for('add_to_cart', product_id=product.id) }}">Add to Cart</a>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

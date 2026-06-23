@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Orders</h2>
+<table class="orders-table">
+    <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Email</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th>Payment</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order in orders %}
+            <tr>
+                <td><a href="{{ url_for('order_detail', order_id=order.id) }}">{{ order.id }}</a></td>
+                <td>{{ order.email }}</td>
+                <td>${{ "%.2f" | format(order.total_amount) }}</td>
+                <td>{{ order.status }}</td>
+                <td>{{ order.payment_status }}</td>
+                <td>{{ order.created_at.strftime('%Y-%m-%d') }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
